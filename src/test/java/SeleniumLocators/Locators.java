@@ -34,10 +34,18 @@ public class Locators {
         *  xpath syntax -> //tagname[@attribute='value']
         *  xpath syntax -> //*[@attribute='value']     */
 
+        /* CSS selector using he indexes as below
+        * input[placeholder='Email']:nth-child(3)
+        * we can use nth-child to find the indexes in the css selector */
+
+
         String errorText = driver.findElement(By.cssSelector("p.error")).getText();
         System.out.println(errorText);
         driver.findElement(By.linkText("Forgot your password?")).click();
         driver.findElement(By.xpath("//input[@placeholder='Name']")).sendKeys("kaushik");
+        driver.findElement(By.xpath("//*[@placeholder='Email']")).sendKeys("abc123@gmail.com");
+        driver.findElement(By.xpath("//*[@placeholder='Email']")).clear();
+        //driver.findElement(By.cssSelector("input[placeholder='Email']:nth-child(3)")).sendKeys("babbi@gmail.com");
     }
     @AfterTest
     public void closeBrowser() throws InterruptedException {
