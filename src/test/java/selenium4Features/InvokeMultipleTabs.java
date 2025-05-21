@@ -1,43 +1,44 @@
-package webEementTechniques.MouseAndkeyboardActions;
+package selenium4Features;
 
-import org.openqa.selenium.By;
-import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.WindowType;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
-import org.openqa.selenium.interactions.Actions;
 import org.testng.annotations.AfterTest;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 
 import java.time.Duration;
+import java.util.Iterator;
+import java.util.Set;
 
-public class PracticeActions {
+public class InvokeMultipleTabs {
     WebDriver driver;
     ChromeOptions options;
-    Actions actions;
 
     @BeforeTest
     public void launchBrowser(){
         options=new ChromeOptions();
         options.addArguments("--start-maximized");
         driver=new ChromeDriver(options);
-        driver.get("https://www.amazon.in/");
+        driver.get("https://rahulshettyacademy.com/angularpractice/");
         driver.manage().window().maximize();
         driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10000));
     }
-
-
     @Test
     public void execute(){
-        actions=new Actions(driver);
-        WebElement accountsOption = driver.findElement(By.cssSelector("#nav-link-accountList"));
-        // move to a specific element
-        actions.moveToElement(accountsOption).perform();
+        driver.switchTo().newWindow(WindowType.TAB);
+        Set<String> windows = driver.getWindowHandles();
+        System.out.println(windows.size());
+        Iterator<String> iterator = windows.iterator();
+        String parentWindow = iterator.next();
+        String childWindow = iterator.next();
+        driver.switchTo().window(childWindow);
+        driver.get("https://rahulshettyacademy.com/");
+        System.out.println("The new title is : " + driver.getTitle());
+        driver.switchTo().window(parentWindow);
+        System.out.println("The old title is : " + driver.getTitle());
 
-        WebElement searchBox = driver.findElement(By.cssSelector("#twotabsearchtextbox"));
-        actions.keyDown(Keys.SHIFT).sendKeys(searchBox,"hello").doubleClick().perform();
     }
     @AfterTest
     public void closeBrowser() throws InterruptedException {
